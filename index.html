@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simple Calculator</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+        }
+        .calculator {
+            max-width: 300px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            font-size: 24px;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        input[type="number"] {
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+        select {
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+        button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 3px;
+            padding: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        
+        .result {
+            text-align: center;
+            font-size: 20px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator">
+        <h1>Simple Calculator</h1>
+        <form action="/calculate" method="POST">
+            <input type="number" name="num1" placeholder="Enter first number" required>
+            <input type="number" name="num2" placeholder="Enter second number" required>
+            <select name="operator" required>
+                <option value="add">+</option>
+                <option value="subtract">-</option>
+                <option value="multiply">*</option>
+                <option value="divide">/</option>
+            </select>
+            <button type="submit">Calculate</button>
+        </form>
+        <div class="result" id="calc-result"></div> 
+    </div>
+</body>
+</html>
+
+<script>
+    // JavaScript to update the result
+    function updateResult() {
+        var num1 = parseFloat(document.getElementsByName("num1")[0].value);
+        var num2 = parseFloat(document.getElementsByName("num2")[0].value);
+        var operator = document.getElementsByName("operator")[0].value;
+
+        var result = 0;
+        switch (operator) {
+            case "add":
+                result = num1 + num2;
+                break;
+            case "subtract":
+                result = num1 - num2;
+                break;
+            case "multiply":
+                result = num1 * num2;
+                break;
+            case "divide":
+                if (num2 !== 0) {
+                    result = num1 / num2;
+                } else {
+                    alert("Division by zero is not allowed.");
+                }
+                break;
+            default:
+                alert("Invalid operator.");
+                break;
+        }
+
+        // Update the result in the existing result element
+        var resultElement = document.getElementById("calc-result");
+        resultElement.innerHTML = "Result: " + result.toFixed(2);
+    }
+
+    // Attach the updateResult function to the form submission event
+    document.querySelector("form").addEventListener("submit", function (event) {
+        event.preventDefault(); // Prevent the form from submitting in the traditional way
+        updateResult(); // Calculate and display the result
+
+        // Clear the input fields after displaying the result
+        document.getElementsByName("num1")[0].value = "";
+        document.getElementsByName("num2")[0].value = "";
+    });
+</script>
+
+
+
